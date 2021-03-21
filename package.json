@@ -18,7 +18,10 @@
   "homepage": "https://github.com/anatolyburtsev/frontend-project-lvl3#readme",
   "jest": {
     "verbose": true,
-    "testURL": "http://localhost/"
+    "testURL": "http://localhost/",
+    "moduleNameMapper": {
+      "\\.(css|jpg|png)$": "<rootDir>/src/empty-module.js"
+    }
   },
   "main": "src/init.js",
   "dependencies": {
