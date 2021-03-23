@@ -4,4 +4,4 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a941d75f52622fb5c4a5/maintainability)](https://codeclimate.com/github/anatolyburtsev/frontend-project-lvl3/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a941d75f52622fb5c4a5/test_coverage)](https://codeclimate.com/github/anatolyburtsev/frontend-project-lvl3/test_coverage)
 
-[Link to app online](https://frontend-project-lvl3-r7lw2u4vs-anatolyburtsev.vercel.app/) 
+[Link to app online](https://frontend-project-lvl3-kappa-lovat.vercel.app/) 
