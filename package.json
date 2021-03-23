@@ -20,12 +20,15 @@
     "verbose": true,
     "testURL": "http://localhost/",
     "moduleNameMapper": {
-      "\\.(css|jpg|png)$": "<rootDir>/src/empty-module.js"
+      "\\.(css|jpg|png)$": "<rootDir>/__mock__/empty-module.js"
     }
   },
   "main": "src/init.js",
   "dependencies": {
-    "bootstrap": "^4.6.0"
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "on-change": "^2.2.3",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
