@@ -32,11 +32,13 @@ export default () => {
   const form = document.querySelector('.rss-form');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    watchedState.feed.error = '';
     const formData = new FormData(form);
     const feedUrl = formData.get('url');
     const isUrlValid = isValidRssUrl(feedUrl);
     watchedState.feed.urlValid = isUrlValid;
     if (!isUrlValid) {
+      watchedState.feed.error = 'invalid url';
       return;
     }
 
