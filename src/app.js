@@ -22,7 +22,7 @@ export default () => {
 
   const inputUrlEl = elements.inputUrlEl();
 
-  const watchedState = onChange(state, (path, value, prevValue, name) => {
+  const watchedState = onChange(state, (path, value) => {
     console.log('state update');
     console.log(`path: ${path} value: ${value}`);
     console.dir(watchedState);
@@ -65,5 +65,3 @@ export default () => {
       });
   });
 };
-
-

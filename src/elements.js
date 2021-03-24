@@ -1,10 +1,6 @@
-const inputUrlEl = () => {
-  return document.querySelector('input[name="url"]');
-};
+const inputUrlEl = () => document.querySelector('input[name="url"]');
 
-const feedbackEl = () => {
-  return document.querySelector('.feedback');
-};
+const feedbackEl = () => document.querySelector('.feedback');
 
 export default {
   inputUrlEl,
