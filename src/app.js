@@ -19,11 +19,8 @@ const storeFeed = (watchedState, rssFeed, url) => {
 
 const storePosts = (watchedState, posts) => {
   const firstIdx = watchedState.posts.length;
-  posts.forEach((post, idx) => {
-    post.id = firstIdx + idx;
-    // watchedState.posts.push({ id: firstIdx + idx, ...post });
-  });
-  watchedState.posts = [...watchedState.posts, ...posts];
+  const postsWithId = posts.map((post, idx) => ({ id: firstIdx + idx, ...post }));
+  watchedState.posts.push(...postsWithId);
 };
 
 export default () => {

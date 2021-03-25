@@ -3,4 +3,3 @@ export default {
   urlDuplicate: 'urlDuplicate',
   rssFeedNotFound: 'rssFeedNotFound',
 };
-
