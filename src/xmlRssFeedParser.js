@@ -21,7 +21,7 @@ const validateRssFormat = (dom) => {
   }
 };
 
-const parseRss = (url, xmlString) => {
+const parseRss = (xmlString) => {
   const rssFeedDom = tryParseXML(xmlString);
   validateRssFormat(rssFeedDom);
 
@@ -42,7 +42,6 @@ const parseRss = (url, xmlString) => {
   return {
     feed: {
       title,
-      link: url,
       description,
     },
     posts,
