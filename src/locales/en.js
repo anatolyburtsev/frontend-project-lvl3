@@ -1,12 +1,13 @@
-import errors from './errors';
+import strings from './stringConstants';
 
 export default {
   translation: {
-    [errors.invalidUrl]: 'Link must be a valid URL',
-    [errors.urlDuplicate]: 'RSS already added',
-    [errors.rssFeedNotFound]: 'Resource doesn\'t have a valid RSS',
-    feeds: 'Feeds',
-    posts: 'Posts',
-    view: 'View',
+    [strings.invalidUrl]: 'Link must be a valid URL',
+    [strings.urlDuplicate]: 'RSS already added',
+    [strings.rssFeedNotFound]: 'Resource doesn\'t have a valid RSS',
+    [strings.feeds]: 'Feeds',
+    [strings.posts]: 'Posts',
+    [strings.view]: 'View',
+    [strings.rssAddedSuccessfully]: 'RSS feed added successfully',
   },
 };

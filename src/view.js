@@ -1,11 +1,13 @@
 import i18next from 'i18next';
 import elements from './elements';
+import strings from './locales/stringConstants';
 
 export default (path, value) => {
   const inputUrl = elements.inputUrlEl();
   const feedbackEl = elements.feedbackEl();
   const feedsEl = elements.feedsEl();
   const postsEl = elements.postsEl();
+  const btnEl = elements.buttonEl();
 
   if (path === 'feed.urlValid') {
     if (!value) {
@@ -17,17 +19,27 @@ export default (path, value) => {
   if (path === 'feed.error') {
     if (value !== '') {
       feedbackEl.classList.add('text-danger');
+      feedbackEl.classList.remove('text-success');
       feedbackEl.textContent = i18next.t(value);
     } else {
       feedbackEl.classList.remove('text-danger');
-      feedbackEl.textContent = '';
+      feedbackEl.classList.add('text-success');
+      feedbackEl.textContent = i18next.t(strings.rssAddedSuccessfully);
+    }
+  }
+
+  if (path === 'feed.processing') {
+    if (value) {
+      btnEl.setAttribute('disabled', '');
+    } else {
+      btnEl.removeAttribute('disabled');
     }
   }
 
   if (path === 'feeds') {
     feedsEl.innerHTML = '';
     const title = document.createElement('h2');
-    title.textContent = i18next.t('feeds');
+    title.textContent = i18next.t(strings.feeds);
     feedsEl.appendChild(title);
     const list = document.createElement('ul');
     list.classList.add('list-group', 'mb-5');
@@ -48,7 +60,7 @@ export default (path, value) => {
   if (path === 'posts') {
     postsEl.innerHTML = '';
     const title = document.createElement('h2');
-    title.textContent = i18next.t('posts');
+    title.textContent = i18next.t(strings.posts);
     postsEl.appendChild(title);
     const list = document.createElement('ul');
     list.classList.add('list-group');
@@ -70,7 +82,7 @@ export default (path, value) => {
       btn.dataset.id = post.id;
       btn.dataset.toggle = 'modal';
       btn.dataset.target = '#modal';
-      btn.textContent = i18next.t('view');
+      btn.textContent = i18next.t(strings.view);
 
       item.appendChild(link);
       item.appendChild(btn);

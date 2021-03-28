@@ -1,14 +1,16 @@
 const parser = new DOMParser();
 
-const tryParseXML = (xmlString) => {
-  const parsererrorNS = parser.parseFromString('INVALID', 'application/xml')
-    .getElementsByTagName('parsererror')[0].namespaceURI;
-  const dom = parser.parseFromString(xmlString, 'application/xml');
-  if (dom.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0) {
-    throw new Error('Error parsing XML');
-  }
-  return dom;
-};
+// const tryParseXML = (xmlString) => {
+//   const parsererrorNS = parser.parseFromString('INVALID', 'application/xml')
+//     .getElementsByTagName('parsererror')[0].namespaceURI;
+//   const dom = parser.parseFromString(xmlString, 'application/xml');
+//   if (dom.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0) {
+//     throw new Error('Error parsing XML');
+//   }
+//   return dom;
+// };
+
+const unsafeParseXML = (xmlString) => parser.parseFromString(xmlString, 'application/xml');
 
 const validateRssFormat = (dom) => {
   const rss = dom.querySelector('rss');
@@ -22,7 +24,8 @@ const validateRssFormat = (dom) => {
 };
 
 const parseRss = (xmlString) => {
-  const rssFeedDom = tryParseXML(xmlString);
+  const rssFeedDom = unsafeParseXML(xmlString);
+  // const rssFeedDom = tryParseXML(xmlString);
   validateRssFormat(rssFeedDom);
 
   const title = rssFeedDom.querySelector('title').innerHTML;
@@ -32,10 +35,12 @@ const parseRss = (xmlString) => {
     const postTitle = item.querySelector('title').textContent;
     const postLink = item.querySelector('link').textContent;
     const postDescription = item.querySelector('description').textContent;
+    const pubDate = new Date(item.querySelector('pubDate').textContent);
     return {
       title: postTitle,
       link: postLink,
       description: postDescription,
+      publishDate: pubDate,
     };
   });
 
