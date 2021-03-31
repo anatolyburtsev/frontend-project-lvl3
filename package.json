@@ -23,7 +23,7 @@
       "\\.(css|jpg|png)$": "<rootDir>/__mock__/empty-module.js"
     }
   },
-  "main": "src/init.js",
+  "main": "src/app.js",
   "dependencies": {
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
