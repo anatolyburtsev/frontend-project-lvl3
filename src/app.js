@@ -1,5 +1,6 @@
 import onChange from 'on-change';
 import i18next from 'i18next';
+import $ from 'jquery';
 import axiosClient from './tools';
 import en from './locales/en';
 import isValidRssUrl from './validator';
@@ -7,13 +8,19 @@ import elements from './elements';
 import updateView from './view';
 import xmlRssFeedParser from './xmlRssFeedParser';
 import strings from './locales/stringConstants';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle';
 
 const isFeedUrlDuplicated = (feeds, url) => {
   const idx = feeds.findIndex((feed) => feed.link === url);
   return idx > -1;
 };
 
-const getLastPublishDate = (posts) => new Date(Math.max(posts.map((post) => post.publishDate)));
+const getLastPublishDate = (posts) => {
+  const publishDates = posts.map((post) => post.publishDate);
+  const maxPublishDate = Math.max(...publishDates);
+  return new Date(maxPublishDate);
+};
 
 const storeFeed = (state, rssFeed, url) => {
   const latestPublishDate = getLastPublishDate([...rssFeed.posts]);
@@ -26,8 +33,12 @@ const storeFeed = (state, rssFeed, url) => {
 
 const storePosts = (state, posts) => {
   const firstIdx = state.posts.length;
-  const postsWithId = posts.map((post, idx) => ({ id: firstIdx + idx, visited: false, ...post }));
-  state.posts.push(...postsWithId);
+  const enrichedPosts = posts.map((post, idx) => ({
+    id: firstIdx + idx,
+    visited: false,
+    ...post,
+  }));
+  state.posts.push(...enrichedPosts);
 };
 
 const refreshFeed = (state, feed) => axiosClient.get(feed.link)
@@ -66,6 +77,24 @@ const addNewFeed = (state, link, onSuccess, onError, onFinally) => axiosClient.g
   .catch((err) => onError(err))
   .finally(onFinally);
 
+const getPostById = (state, id) => state.posts[id];
+
+const setupModal = (state) => {
+  $('#modal')
+    .on('show.bs.modal', (event) => {
+      const btn = event.relatedTarget;
+      const { id } = btn.dataset;
+      const post = getPostById(state, id);
+      post.visited = true;
+      const modalTitleEl = elements.modalTitleEl();
+      const modalBodyEl = elements.modalBodyEl();
+      const modalMoreInfoEl = elements.modalMoreInfoBtnEl();
+      modalTitleEl.textContent = post.title;
+      modalBodyEl.textContent = post.description;
+      modalMoreInfoEl.setAttribute('href', post.link);
+    });
+};
+
 export default () => {
   i18next.init({
     lng: 'en',
@@ -92,14 +121,40 @@ export default () => {
     console.log('state update');
     console.log(`path: ${path} value: ${value}`);
     console.dir(watchedState);
-    updateView(path, value);
+    updateView(path, value, watchedState);
   });
+
+  watchedState.feeds.push({
+    link: 'ya.ru',
+    lastUpdate: new Date(),
+    title: 'title',
+    description: 'description',
+  });
+
+  watchedState.posts.push({
+    id: 0,
+    visited: false,
+    title: 'post title',
+    description: 'post description',
+    link: 'https://www.google.com',
+    publishDate: new Date(),
+  });
+
+  watchedState.posts.push({
+    id: 1,
+    visited: true,
+    title: 'post title 2',
+    description: 'post description 2',
+    link: 'https://www.google.com',
+    publishDate: new Date(),
+  });
+
+  setupModal(watchedState);
 
   refreshAllFeeds(watchedState);
 
   formEl.addEventListener('submit', (e) => {
     e.preventDefault();
-    // watchedState.feed.error = '';
     const formData = new FormData(formEl);
     const feedUrl = formData.get('url');
     const isUrlValid = isValidRssUrl(feedUrl);

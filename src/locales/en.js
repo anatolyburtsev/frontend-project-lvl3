@@ -9,5 +9,7 @@ export default {
     [strings.posts]: 'Posts',
     [strings.view]: 'View',
     [strings.rssAddedSuccessfully]: 'RSS feed added successfully',
+    [strings.readFull]: 'Read more',
+    [strings.close]: 'Close',
   },
 };

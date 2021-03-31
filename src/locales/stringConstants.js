@@ -6,4 +6,6 @@ export default {
   feeds: 'feeds',
   posts: 'posts',
   view: 'view',
+  readFull: 'readFull',
+  close: 'close',
 };

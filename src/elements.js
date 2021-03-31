@@ -10,6 +10,11 @@ const buttonEl = () => document.querySelector('button');
 
 const formEl = () => document.querySelector('.rss-form');
 
+const modalEl = () => document.querySelector('modal');
+const modalTitleEl = () => document.querySelector('.modal-title');
+const modalBodyEl = () => document.querySelector('.modal-body');
+const modalMoreInfoBtnEl = () => document.querySelector('.full-article');
+
 export default {
   inputUrlEl,
   feedbackEl,
@@ -17,4 +22,8 @@ export default {
   postsEl,
   buttonEl,
   formEl,
+  modalEl,
+  modalTitleEl,
+  modalBodyEl,
+  modalMoreInfoBtnEl,
 };

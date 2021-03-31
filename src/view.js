@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import elements from './elements';
 import strings from './locales/stringConstants';
 
-export default (path, value) => {
+export default (path, value, state) => {
   const inputUrl = elements.inputUrlEl();
   const feedbackEl = elements.feedbackEl();
   const feedsEl = elements.feedsEl();
@@ -57,19 +57,23 @@ export default (path, value) => {
     feedsEl.appendChild(list);
   }
 
-  if (path === 'posts') {
+  if (path.startsWith('posts')) {
     postsEl.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = i18next.t(strings.posts);
     postsEl.appendChild(title);
     const list = document.createElement('ul');
     list.classList.add('list-group');
-    value.forEach((post) => {
+    state.posts.forEach((post) => {
       const item = document.createElement('li');
       item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
 
       const link = document.createElement('a');
-      link.classList.add('font-weight-bold');
+      if (post.visited) {
+        link.classList.add('font-weight-normal');
+      } else {
+        link.classList.add('font-weight-bold');
+      }
       link.setAttribute('href', post.link);
       link.dataset.id = post.id;
       link.setAttribute('target', '_blank');
