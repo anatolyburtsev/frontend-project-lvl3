@@ -5,7 +5,7 @@ import path from 'path';
 import isValidRssUrl from '../src/validator';
 
 beforeEach(async () => {
-  const pathToHtml = path.resolve(__dirname, '../src/index.html');
+  const pathToHtml = path.resolve(__dirname, '../index.html');
   const html = await fs.readFile(pathToHtml, 'utf8');
   document.body.innerHTML = html;
 });
