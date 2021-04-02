@@ -160,7 +160,7 @@ const appViewStateMachine = {
   [appStates.success]: {
     enter: () => {
       clearInput();
-      showFeedback(strings.rssAddedSuccessfully);
+      showFeedback(strings.alerts.rssAddedSuccessfully);
     },
     leave: () => {
       hideFeedback();

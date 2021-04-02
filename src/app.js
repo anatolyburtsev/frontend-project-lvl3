@@ -58,37 +58,11 @@ export default () => {
     },
   });
 
-  watchedState.feeds.push({
-    link: 'http://www.ya.ru',
-    lastUpdate: new Date(),
-    title: 'title',
-    description: 'description',
-  });
-
-  watchedState.posts.push({
-    id: 0,
-    visited: false,
-    title: 'post title',
-    description: 'post description',
-    link: 'https://www.google.com',
-    publishDate: new Date(),
-  });
-
-  watchedState.posts.push({
-    id: 1,
-    visited: true,
-    title: 'post title 2',
-    description: 'post description 2',
-    link: 'https://www.google.com',
-    publishDate: new Date(),
-  });
-
   initView(watchedState);
 
-  // temporary disabled
   refreshAllFeeds(watchedState);
 
-  formEl.addEventListener('submit', async (e) => {
+  formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.state = appStates.processing;
     const formData = new FormData(formEl);
