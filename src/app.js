@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import axios from 'axios';
-import en from './locales/en';
+import ru from './locales/ru';
 import isValidRssUrl from './validator';
 import parseRSSXML from './xmlRssFeedParser';
 import strings from './locales/stringConstants';
@@ -51,10 +51,10 @@ const addNewFeed = (state, link, onSuccess, onError) => axios.get(link)
 
 export default () => {
   i18next.init({
-    lng: 'en',
+    lng: 'ru',
     debug: true,
     resources: {
-      en,
+      ru,
     },
   });
 
