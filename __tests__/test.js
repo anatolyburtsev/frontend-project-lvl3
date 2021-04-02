@@ -2,19 +2,12 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import init from '../src/init';
 import isValidRssUrl from '../src/validator';
 
 beforeEach(async () => {
-  const pathToHtml = path.resolve(__dirname, '__fixtures__/index.html');
+  const pathToHtml = path.resolve(__dirname, '../src/index.html');
   const html = await fs.readFile(pathToHtml, 'utf8');
   document.body.innerHTML = html;
-});
-
-test('init', () => {
-  init();
-  expect(true)
-    .toBeDefined();
 });
 
 describe('test validator', () => {

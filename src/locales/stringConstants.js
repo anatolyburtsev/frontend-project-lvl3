@@ -1,8 +1,10 @@
 export default {
-  invalidUrl: 'invalidUrl',
-  urlDuplicate: 'urlDuplicate',
-  rssFeedNotFound: 'rssFeedNotFound',
-  rssAddedSuccessfully: 'rssAddedSuccessfully',
+  alerts: {
+    invalidUrl: 'invalidUrl',
+    urlDuplicate: 'urlDuplicate',
+    invalidRssFeed: 'invalidRssFeed',
+    rssAddedSuccessfully: 'rssAddedSuccessfully',
+  },
   feeds: 'feeds',
   posts: 'posts',
   view: 'view',
