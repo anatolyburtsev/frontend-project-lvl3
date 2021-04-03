@@ -7,7 +7,7 @@ import strings from './locales/stringConstants';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { formEl, initView } from './view';
 import {
-  getLastPublishDate,
+  // getLastPublishDate,
   isFeedUrlDuplicated,
   storeFeed,
   storePosts,
@@ -15,30 +15,30 @@ import {
 } from './model';
 import { appStates } from './constants';
 
-const refreshFeed = (state, feed) => axios.get(feed.link)
-  .then((response) => parseRSSXML(response.data))
-  .then((rssFeed) => {
-    const newPosts = rssFeed.posts
-      .filter((post) => post.publishDate > feed.lastUpdate);
-    if (newPosts.length === 0) return;
-    console.log('new posts are found');
-    storePosts(state, newPosts);
-    // eslint-disable-next-line no-param-reassign
-    feed.lastUpdate = getLastPublishDate(newPosts);
-  })
-  .catch((err) => {
-    console.error(`Failed to refresh feed: ${feed.link}`, err);
-  });
-
-const refreshAllFeeds = (state) => {
-  console.log('refresh all feeds');
-  window.setTimeout(() => Promise.all(state.feeds.map(
-    (feed) => refreshFeed(state, feed),
-  ))
-    .then(() => {
-      refreshAllFeeds(state);
-    }), 5000);
-};
+// const refreshFeed = (state, feed) => axios.get(feed.link)
+//   .then((response) => parseRSSXML(response.data))
+//   .then((rssFeed) => {
+//     const newPosts = rssFeed.posts
+//       .filter((post) => post.publishDate > feed.lastUpdate);
+//     if (newPosts.length === 0) return;
+//     console.log('new posts are found');
+//     storePosts(state, newPosts);
+//     // eslint-disable-next-line no-param-reassign
+//     feed.lastUpdate = getLastPublishDate(newPosts);
+//   })
+//   .catch((err) => {
+//     console.error(`Failed to refresh feed: ${feed.link}`, err);
+//   });
+//
+// const refreshAllFeeds = (state) => {
+//   console.log('refresh all feeds');
+//   window.setTimeout(() => Promise.all(state.feeds.map(
+//     (feed) => refreshFeed(state, feed),
+//   ))
+//     .then(() => {
+//       refreshAllFeeds(state);
+//     }), 5000);
+// };
 
 const addNewFeed = (state, link, onSuccess, onError) => axios.get(link)
   .then((response) => parseRSSXML(response.data))
@@ -61,7 +61,7 @@ export default () => {
 
   initView(watchedState);
 
-  refreshAllFeeds(watchedState);
+  // refreshAllFeeds(watchedState);
 
   formEl.addEventListener('submit', (e) => {
     e.preventDefault();
