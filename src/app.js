@@ -62,7 +62,7 @@ export default () => {
   initView(watchedState);
 
   // refreshAllFeeds(watchedState);
-
+  window.HTMLFormElement.prototype.submit = () => {};
   formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.state = appStates.processing;
