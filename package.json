@@ -16,7 +16,7 @@
     "url": "https://github.com/anatolyburtsev/frontend-project-lvl3/issues"
   },
   "homepage": "https://github.com/anatolyburtsev/frontend-project-lvl3#readme",
-  "main": "src/app.js",
+  "main": "src/init.js",
   "dependencies": {
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",

@@ -50,13 +50,7 @@ const addNewFeed = (state, link, onSuccess, onError) => axios.get(link)
   .catch((err) => onError(err));
 
 export default () => {
-  i18next.init({
-    lng: 'ru',
-    debug: true,
-    resources: {
-      ru,
-    },
-  });
+
   // TODO add "then"
 
   initView(watchedState);
