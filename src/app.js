@@ -29,7 +29,6 @@ const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
     const newPosts = rssFeed.posts
       .filter((post) => post.publishDate > feed.lastUpdate);
     if (newPosts.length === 0) return;
-    console.log('new posts are found');
     storePosts(state, newPosts);
     // eslint-disable-next-line no-param-reassign
     feed.lastUpdate = getLastPublishDate(newPosts);
@@ -39,7 +38,6 @@ const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
   });
 
 const refreshAllFeeds = (state) => {
-  console.log('refresh all feeds');
   window.setTimeout(() => Promise.all(state.feeds.map(
     (feed) => refreshFeed(state, feed),
   ))
@@ -61,8 +59,8 @@ export default () => {
   initView(watchedState);
 
   refreshAllFeeds(watchedState);
-  window.HTMLFormElement.prototype.submit = () => {
-  };
+  // window.HTMLFormElement.prototype.submit = () => {
+  // };
   elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.state = appStates.processing;

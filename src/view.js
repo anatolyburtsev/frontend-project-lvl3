@@ -74,10 +74,6 @@ const appViewStateMachine = {
   },
   [appStates.generalError]: {
     enter: (state) => {
-      console.log('Error happens');
-      console.error(state.error);
-      console.log('state for debug:');
-      console.dir(state);
       showError(state.error);
     },
     leave: () => {
@@ -97,7 +93,6 @@ const appViewStateMachine = {
 
 export const updateView = (path, value, previousValue, state) => {
   if (path === 'state') {
-    console.log(`state is changing from ${previousValue} to ${value}`);
     appViewStateMachine[previousValue].leave();
     appViewStateMachine[value].enter(state);
   }

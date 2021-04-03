@@ -40,8 +40,5 @@ const state = {
 };
 
 export const watchedState = onChange(state, (path, value, previousValue) => {
-  console.log('state update');
-  console.log(`path: ${path}, value:`);
-  console.dir(value);
   updateView(path, value, previousValue, watchedState);
 });
