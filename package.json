@@ -16,13 +16,6 @@
     "url": "https://github.com/anatolyburtsev/frontend-project-lvl3/issues"
   },
   "homepage": "https://github.com/anatolyburtsev/frontend-project-lvl3#readme",
-  "jest": {
-    "verbose": true,
-    "testURL": "http://localhost/",
-    "moduleNameMapper": {
-      "\\.(css|jpg|png)$": "<rootDir>/__mock__/empty-module.js"
-    }
-  },
   "main": "src/app.js",
   "dependencies": {
     "axios": "^0.21.1",

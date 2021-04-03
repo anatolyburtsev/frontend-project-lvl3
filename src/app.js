@@ -57,6 +57,7 @@ export default () => {
       ru,
     },
   });
+  // TODO add "then"
 
   initView(watchedState);
 
