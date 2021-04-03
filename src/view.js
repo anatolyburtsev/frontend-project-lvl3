@@ -2,20 +2,7 @@ import i18next from 'i18next';
 import $ from 'jquery';
 import strings from './locales/stringConstants';
 import { appStates } from './constants';
-import { renderFeeds, renderPosts } from './render';
-
-export const elements = {
-  formEl: document.querySelector('#main-form'),
-  inputUrlEl: document.querySelector('input[name="url"]'),
-  feedbackEl: document.querySelector('.feedback'),
-  feedsEl: document.querySelector('.feeds'),
-  postsEl: document.querySelector('.posts'),
-  buttonEl: document.querySelector('[aria-label="add"]'),
-  modalEl: document.querySelector('modal'),
-  modalTitleEl: document.querySelector('.modal-title'),
-  modalBodyEl: document.querySelector('.modal-body'),
-  modalMoreInfoBtnEl: document.querySelector('.full-article'),
-};
+import { elements, renderFeeds, renderPosts } from './render';
 
 const showError = (textKey) => {
   elements.feedbackEl.classList.add('text-danger');
