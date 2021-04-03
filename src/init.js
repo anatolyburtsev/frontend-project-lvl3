@@ -4,7 +4,7 @@ import App from './app.js';
 
 export default () => i18next.init({
   lng: 'ru',
-  debug: true,
+  debug: false,
   resources: {
     ru,
   },

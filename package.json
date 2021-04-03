@@ -15,6 +15,10 @@
   "bugs": {
     "url": "https://github.com/anatolyburtsev/frontend-project-lvl3/issues"
   },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
   "homepage": "https://github.com/anatolyburtsev/frontend-project-lvl3#readme",
   "main": "src/init.js",
   "dependencies": {
