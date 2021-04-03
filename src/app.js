@@ -15,12 +15,12 @@ import { appStates, FEED_REFRESH_TIMEOUT_MS } from './constants';
 import { elements } from './render';
 
 const routes = {
-  proxy: (targetUrl) => targetUrl
-  // const proxyUrl = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
-  // proxyUrl.searchParams.set('disableCache', 'true');
-  // proxyUrl.searchParams.set('url', targetUrl);
-  // return proxyUrl.toString();
-  ,
+  proxy: (targetUrl) => {
+    const proxyUrl = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
+    proxyUrl.searchParams.set('disableCache', 'true');
+    proxyUrl.searchParams.set('url', targetUrl);
+    return proxyUrl.toString();
+  },
 };
 
 const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
@@ -65,7 +65,8 @@ export default () => {
     e.preventDefault();
     watchedState.state = appStates.processing;
     const formData = new FormData(elements.formEl);
-    const feedUrl = formData.get('url').trim();
+    const feedUrl = formData.get('url')
+      .trim();
     if (!isValidRssUrl(feedUrl)) {
       watchedState.state = appStates.invalidUrl;
       return;
