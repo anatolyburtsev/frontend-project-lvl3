@@ -6,3 +6,5 @@ export const appStates = Object.freeze({
   invalidUrl: 'invalid url',
   generalError: 'invalid rss feed',
 });
+
+export const FEED_REFRESH_TIMEOUT_MS = 5000;
