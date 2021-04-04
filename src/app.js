@@ -19,8 +19,8 @@ const routes = {
     const proxyUrl = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
     proxyUrl.searchParams.set('disableCache', 'true');
     proxyUrl.searchParams.set('url', targetUrl);
-    return targetUrl;
-    // return proxyUrl.toString();
+    // return targetUrl;
+    return proxyUrl.toString();
   },
 };
 
