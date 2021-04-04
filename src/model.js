@@ -26,9 +26,8 @@ export const storePosts = (state, posts) => {
     id: firstIdx + idx,
     visited: false,
     ...post,
-  }))
-    .reverse();
-  state.posts.push(...enrichedPosts);
+  }));
+  state.posts.unshift(...enrichedPosts);
 };
 
 export const initialState = {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import onChange from 'on-change';
+import _ from 'lodash';
 import isValidRssUrl from './validator';
 import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
@@ -58,7 +59,7 @@ const addNewFeed = (state, link, onSuccess, onError) => axios.get(routes.proxy(l
 
 export default () => {
   const elements = getElements(document);
-  const watchedState = onChange(initialState, (path, value, previousValue) => {
+  const watchedState = onChange(_.cloneDeep(initialState), (path, value, previousValue) => {
     updateView(path, value, previousValue, watchedState, elements);
   });
 

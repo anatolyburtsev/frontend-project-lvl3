@@ -13,7 +13,6 @@ const parser = new DOMParser();
 const unsafeParseXML = (xmlString) => parser.parseFromString(xmlString, 'application/xml');
 
 const validateRssFormat = (dom) => {
-  console.dir(dom);
   const rss = dom.querySelector('rss');
   if (rss === null) {
     throw new Error('Invalid rss format: rss element not found');
@@ -25,7 +24,6 @@ const validateRssFormat = (dom) => {
 };
 
 const parseRss = (xmlString) => {
-  console.error(xmlString);
   const rssFeedDom = unsafeParseXML(xmlString);
   // const rssFeedDom = tryParseXML(xmlString);
   validateRssFormat(rssFeedDom);
