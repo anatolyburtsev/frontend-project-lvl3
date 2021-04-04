@@ -67,9 +67,11 @@ const appViewStateMachine = (elements) => ({
   [appStates.processing]: {
     enter: () => {
       elements.buttonEl.setAttribute('disabled', '');
+      elements.inputUrlEl.setAttribute('readonly', '');
     },
     leave: () => {
       elements.buttonEl.removeAttribute('disabled');
+      elements.inputUrlEl.removeAttribute('readonly');
     },
   },
   [appStates.generalError]: {
