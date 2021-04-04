@@ -6,6 +6,7 @@ export default {
     [strings.alerts.urlDuplicate]: 'RSS уже существует',
     [strings.alerts.invalidRssFeed]: 'Ресурс не содержит валидный RSS',
     [strings.alerts.rssAddedSuccessfully]: 'RSS успешно загружен',
+    [strings.alerts.networkIssue]: 'Ошибка сети',
     [strings.feeds]: 'Фиды',
     [strings.posts]: 'Посты',
     [strings.view]: 'Просмотр',

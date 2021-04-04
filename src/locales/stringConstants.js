@@ -4,6 +4,7 @@ export default {
     urlDuplicate: 'urlDuplicate',
     invalidRssFeed: 'invalidRssFeed',
     rssAddedSuccessfully: 'rssAddedSuccessfully',
+    networkIssue: 'networkIssue',
   },
   feeds: 'feeds',
   posts: 'posts',

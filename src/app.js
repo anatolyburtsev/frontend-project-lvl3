@@ -48,14 +48,27 @@ const refreshAllFeeds = (state) => {
     }), FEED_REFRESH_TIMEOUT_MS);
 };
 
-const addNewFeed = (state, link, onSuccess, onError) => axios.get(routes.proxy(link))
+const addNewFeed = (state, link) => axios
+  .get(routes.proxy(link))
+  .catch((err) => {
+    console.error(err);
+    state.error = strings.alerts.networkIssue;
+    state.state = appStates.generalError;
+  })
   .then((response) => parseRSSXML(response.data.contents))
+  .catch((err) => {
+    console.error(err);
+    state.error = strings.alerts.invalidRssFeed;
+    state.state = appStates.generalError;
+  })
   .then((rssFeed) => {
     storeFeed(state, rssFeed, link);
     storePosts(state, rssFeed.posts);
   })
-  .then(onSuccess)
-  .catch((err) => onError(err));
+  .then(() => {
+    state.error = '';
+    state.state = appStates.success;
+  });
 
 export default () => {
   const elements = getElements(document);
@@ -66,13 +79,13 @@ export default () => {
   initView(watchedState, elements);
 
   refreshAllFeeds(watchedState);
+
   elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.state = appStates.processing;
     const formData = new FormData(elements.formEl);
     const feedUrl = formData.get('url')
       .trim();
-    console.log(`URL: ${feedUrl}`);
     if (!isValidRssUrl(feedUrl)) {
       watchedState.state = appStates.invalidUrl;
       return;
@@ -84,13 +97,6 @@ export default () => {
       return;
     }
 
-    addNewFeed(watchedState, feedUrl, () => {
-      watchedState.error = '';
-      watchedState.state = appStates.success;
-    }, (err) => {
-      console.error(err);
-      watchedState.error = strings.alerts.invalidRssFeed;
-      watchedState.state = appStates.generalError;
-    });
+    addNewFeed(watchedState, feedUrl);
   });
 };
