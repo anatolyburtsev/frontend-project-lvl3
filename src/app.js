@@ -71,6 +71,7 @@ export default () => {
     const formData = new FormData(elements.formEl);
     const feedUrl = formData.get('url')
       .trim();
+    console.log(`URL: ${ feedUrl}`);
     if (!isValidRssUrl(feedUrl)) {
       watchedState.state = appStates.invalidUrl;
       return;

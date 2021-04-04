@@ -25,6 +25,7 @@ const validateRssFormat = (dom) => {
 };
 
 const parseRss = (xmlString) => {
+  console.error(xmlString);
   const rssFeedDom = unsafeParseXML(xmlString);
   // const rssFeedDom = tryParseXML(xmlString);
   validateRssFormat(rssFeedDom);
