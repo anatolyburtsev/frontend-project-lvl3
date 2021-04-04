@@ -1,7 +1,7 @@
 import axios from 'axios';
 import onChange from 'on-change';
 import isValidRssUrl from './validator';
-import parseRSSXML from './xmlRssFeedParser';
+import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { initView, updateView } from './view';
