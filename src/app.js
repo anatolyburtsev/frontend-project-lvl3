@@ -1,5 +1,4 @@
 import axios from 'axios';
-import i18next from 'i18next';
 import isValidRssUrl from './validator';
 import parseRSSXML from './xmlRssFeedParser';
 import strings from './locales/stringConstants';
@@ -13,8 +12,6 @@ import {
   watchedState,
 } from './model';
 import { appStates, FEED_REFRESH_TIMEOUT_MS } from './constants';
-import { elements } from './render';
-import ru from './locales/ru';
 
 const routes = {
   proxy: (targetUrl) => {
@@ -58,24 +55,17 @@ const addNewFeed = (state, link, onSuccess, onError) => axios.get(routes.proxy(l
   .then(onSuccess)
   .catch((err) => onError(err));
 
-export default async () => {
-  await i18next.init({
-    lng: 'ru',
-    debug: false,
-    resources: {
-      ru,
-    },
-  });
-
+export default () => {
   initView(watchedState);
 
   refreshAllFeeds(watchedState);
   // window.HTMLFormElement.prototype.submit = () => {
   // };
-  elements.formEl.addEventListener('submit', (e) => {
+  const formEl = document.querySelector('#main-form');
+  formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.state = appStates.processing;
-    const formData = new FormData(elements.formEl);
+    const formData = new FormData(formEl);
     const feedUrl = formData.get('url')
       .trim();
     if (!isValidRssUrl(feedUrl)) {
