@@ -25,7 +25,7 @@ const routes = {
 };
 
 const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
-  .then((response) => parseRSSXML(response.data))
+  .then((response) => parseRSSXML(response.data.contents))
   .then((rssFeed) => {
     const newPosts = rssFeed.posts
       .filter((post) => post.publishDate > feed.lastUpdate);
@@ -48,7 +48,7 @@ const refreshAllFeeds = (state) => {
 };
 
 const addNewFeed = (state, link, onSuccess, onError) => axios.get(routes.proxy(link))
-  .then((response) => parseRSSXML(response.data))
+  .then((response) => parseRSSXML(response.data.contents))
   .then((rssFeed) => {
     storeFeed(state, rssFeed, link);
     storePosts(state, rssFeed.posts);
@@ -71,7 +71,7 @@ export default () => {
     const formData = new FormData(elements.formEl);
     const feedUrl = formData.get('url')
       .trim();
-    console.log(`URL: ${ feedUrl}`);
+    console.log(`URL: ${feedUrl}`);
     if (!isValidRssUrl(feedUrl)) {
       watchedState.state = appStates.invalidUrl;
       return;
