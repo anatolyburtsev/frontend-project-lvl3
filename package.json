@@ -20,7 +20,7 @@
     "testURL": "http://localhost/"
   },
   "homepage": "https://github.com/anatolyburtsev/frontend-project-lvl3#readme",
-  "main": "src/init.js",
+  "main": "src/app.js",
   "dependencies": {
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",

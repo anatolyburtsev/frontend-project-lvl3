@@ -1,4 +1,5 @@
 import axios from 'axios';
+import i18next from 'i18next';
 import isValidRssUrl from './validator';
 import parseRSSXML from './xmlRssFeedParser';
 import strings from './locales/stringConstants';
@@ -13,13 +14,15 @@ import {
 } from './model';
 import { appStates, FEED_REFRESH_TIMEOUT_MS } from './constants';
 import { elements } from './render';
+import ru from './locales/ru';
 
 const routes = {
   proxy: (targetUrl) => {
     const proxyUrl = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
     proxyUrl.searchParams.set('disableCache', 'true');
     proxyUrl.searchParams.set('url', targetUrl);
-    return proxyUrl.toString();
+    return targetUrl;
+    // return proxyUrl.toString();
   },
 };
 
@@ -55,7 +58,15 @@ const addNewFeed = (state, link, onSuccess, onError) => axios.get(routes.proxy(l
   .then(onSuccess)
   .catch((err) => onError(err));
 
-export default () => {
+export default async () => {
+  await i18next.init({
+    lng: 'ru',
+    debug: false,
+    resources: {
+      ru,
+    },
+  });
+
   initView(watchedState);
 
   refreshAllFeeds(watchedState);
