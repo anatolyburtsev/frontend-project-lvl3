@@ -50,17 +50,7 @@ const refreshAllFeeds = (state) => {
 
 const addNewFeed = (state, link) => axios
   .get(routes.proxy(link))
-  .catch((err) => {
-    console.error(err);
-    state.error = strings.alerts.networkIssue;
-    state.state = appStates.generalError;
-  })
   .then((response) => parseRSSXML(response.data.contents))
-  .catch((err) => {
-    console.error(err);
-    state.error = strings.alerts.invalidRssFeed;
-    state.state = appStates.generalError;
-  })
   .then((rssFeed) => {
     storeFeed(state, rssFeed, link);
     storePosts(state, rssFeed.posts);
@@ -68,6 +58,16 @@ const addNewFeed = (state, link) => axios
   .then(() => {
     state.error = '';
     state.state = appStates.success;
+  })
+  .catch((err) => {
+    console.error(err);
+    if (err.request) {
+      state.error = strings.alerts.networkIssue;
+      state.state = appStates.generalError;
+    } else {
+      state.error = strings.alerts.invalidRssFeed;
+      state.state = appStates.generalError;
+    }
   });
 
 export default () => {
