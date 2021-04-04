@@ -1,5 +1,3 @@
-import onChange from 'on-change';
-import { updateView } from './view';
 import { appStates } from './constants';
 
 export const isFeedUrlDuplicated = (feeds, url) => {
@@ -28,17 +26,14 @@ export const storePosts = (state, posts) => {
     id: firstIdx + idx,
     visited: false,
     ...post,
-  })).reverse();
+  }))
+    .reverse();
   state.posts.push(...enrichedPosts);
 };
 
-const state = {
+export const initialState = {
   state: appStates.idle,
   error: '',
   feeds: [],
   posts: [],
 };
-
-export const watchedState = onChange(state, (path, value, previousValue) => {
-  updateView(path, value, previousValue, watchedState);
-});

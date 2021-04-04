@@ -1,17 +1,18 @@
 import axios from 'axios';
+import onChange from 'on-change';
 import isValidRssUrl from './validator';
 import parseRSSXML from './xmlRssFeedParser';
 import strings from './locales/stringConstants';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import { initView } from './view';
+import { initView, updateView } from './view';
 import {
-  getLastPublishDate,
+  getLastPublishDate, initialState,
   isFeedUrlDuplicated,
   storeFeed,
   storePosts,
-  watchedState,
 } from './model';
 import { appStates, FEED_REFRESH_TIMEOUT_MS } from './constants';
+import { getElements } from './render';
 
 const routes = {
   proxy: (targetUrl) => {
@@ -56,16 +57,18 @@ const addNewFeed = (state, link, onSuccess, onError) => axios.get(routes.proxy(l
   .catch((err) => onError(err));
 
 export default () => {
-  initView(watchedState);
+  const elements = getElements(document);
+  const watchedState = onChange(initialState, (path, value, previousValue) => {
+    updateView(path, value, previousValue, watchedState, elements);
+  });
+
+  initView(watchedState, elements);
 
   refreshAllFeeds(watchedState);
-  // window.HTMLFormElement.prototype.submit = () => {
-  // };
-  const formEl = document.querySelector('#main-form');
-  formEl.addEventListener('submit', (e) => {
+  elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     watchedState.state = appStates.processing;
-    const formData = new FormData(formEl);
+    const formData = new FormData(elements.formEl);
     const feedUrl = formData.get('url')
       .trim();
     if (!isValidRssUrl(feedUrl)) {

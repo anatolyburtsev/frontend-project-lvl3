@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import strings from './locales/stringConstants';
 
-export const elements = {
+export const getElements = (document) => ({
   formEl: document.querySelector('#main-form'),
   inputUrlEl: document.querySelector('input[name="url"]'),
   feedbackEl: document.querySelector('.feedback'),
@@ -12,9 +12,10 @@ export const elements = {
   modalTitleEl: document.querySelector('.modal-title'),
   modalBodyEl: document.querySelector('.modal-body'),
   modalMoreInfoBtnEl: document.querySelector('.full-article'),
-};
+});
 
-export const renderFeeds = (feeds) => {
+export const renderFeeds = (feeds, elements) => {
+  // eslint-disable-next-line no-param-reassign
   elements.feedsEl.innerHTML = '';
   const title = document.createElement('h2');
   title.textContent = i18next.t(strings.feeds);
@@ -35,7 +36,8 @@ export const renderFeeds = (feeds) => {
   elements.feedsEl.appendChild(list);
 };
 
-export const renderPosts = (posts) => {
+export const renderPosts = (posts, elements) => {
+  // eslint-disable-next-line no-param-reassign
   elements.postsEl.innerHTML = '';
   const title = document.createElement('h2');
   title.textContent = i18next.t(strings.posts);

@@ -2,35 +2,35 @@ import i18next from 'i18next';
 import $ from 'jquery';
 import strings from './locales/stringConstants';
 import { appStates } from './constants';
-import { elements, renderFeeds, renderPosts } from './render';
+import { renderFeeds, renderPosts } from './render';
 
-const showError = (textKey) => {
+const showError = (textKey, elements) => {
   elements.feedbackEl.classList.add('text-danger');
   elements.feedbackEl.textContent = i18next.t(textKey);
 };
 
-const hideError = () => {
+const hideError = (elements) => {
   elements.feedbackEl.classList.remove('text-danger');
   elements.feedbackEl.textContent = '';
 };
 
-const showFeedback = (textKey) => {
+const showFeedback = (textKey, elements) => {
   elements.feedbackEl.classList.add('text-success');
   elements.feedbackEl.textContent = i18next.t(textKey);
 };
 
-const hideFeedback = () => {
+const hideFeedback = (elements) => {
   elements.feedbackEl.classList.remove('text-success');
   elements.feedbackEl.textContent = '';
 };
 
-const clearInput = () => {
+const clearInput = (elements) => {
   elements.inputUrlEl.value = '';
 };
 
 const getPostById = (state, id) => state.posts[id];
 
-const setupModal = (state) => {
+const setupModal = (state, elements) => {
   $('#modal')
     .on('show.bs.modal', (event) => {
       const btn = event.relatedTarget;
@@ -43,11 +43,11 @@ const setupModal = (state) => {
     });
 };
 
-export const initView = (state) => {
-  setupModal(state);
+export const initView = (state, elements) => {
+  setupModal(state, elements);
 };
 
-const appViewStateMachine = {
+const appViewStateMachine = (elements) => ({
   [appStates.idle]: {
     enter: () => {
     },
@@ -57,11 +57,11 @@ const appViewStateMachine = {
   [appStates.invalidUrl]: {
     enter: () => {
       elements.inputUrlEl.classList.add('is-invalid');
-      showError(strings.alerts.invalidUrl);
+      showError(strings.alerts.invalidUrl, elements);
     },
     leave: () => {
       elements.inputUrlEl.classList.remove('is-invalid');
-      hideError();
+      hideError(elements);
     },
   },
   [appStates.processing]: {
@@ -74,34 +74,34 @@ const appViewStateMachine = {
   },
   [appStates.generalError]: {
     enter: (state) => {
-      showError(state.error);
+      showError(state.error, elements);
     },
     leave: () => {
-      hideError();
+      hideError(elements);
     },
   },
   [appStates.success]: {
     enter: () => {
-      clearInput();
-      showFeedback(strings.alerts.rssAddedSuccessfully);
+      clearInput(elements);
+      showFeedback(strings.alerts.rssAddedSuccessfully, elements);
     },
     leave: () => {
-      hideFeedback();
+      hideFeedback(elements);
     },
   },
-};
+});
 
-export const updateView = (path, value, previousValue, state) => {
+export const updateView = (path, value, previousValue, state, elements) => {
   if (path === 'state') {
-    appViewStateMachine[previousValue].leave();
-    appViewStateMachine[value].enter(state);
+    appViewStateMachine(elements)[previousValue].leave();
+    appViewStateMachine(elements)[value].enter(state);
   }
 
   if (path.startsWith('feeds')) {
-    renderFeeds(state.feeds);
+    renderFeeds(state.feeds, elements);
   }
 
   if (path.startsWith('posts')) {
-    renderPosts(state.posts);
+    renderPosts(state.posts, elements);
   }
 };
