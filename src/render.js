@@ -8,14 +8,12 @@ export const getElements = (document) => ({
   feedsEl: document.querySelector('.feeds'),
   postsEl: document.querySelector('.posts'),
   buttonEl: document.querySelector('[aria-label="add"]'),
-  modalEl: document.querySelector('modal'),
   modalTitleEl: document.querySelector('.modal-title'),
   modalBodyEl: document.querySelector('.modal-body'),
   modalMoreInfoBtnEl: document.querySelector('.full-article'),
 });
 
 export const renderFeeds = (feeds, elements) => {
-  // eslint-disable-next-line no-param-reassign
   elements.feedsEl.innerHTML = '';
   const title = document.createElement('h2');
   title.textContent = i18next.t(strings.feeds);
@@ -37,7 +35,6 @@ export const renderFeeds = (feeds, elements) => {
 };
 
 export const renderPosts = (posts, elements) => {
-  // eslint-disable-next-line no-param-reassign
   elements.postsEl.innerHTML = '';
   const title = document.createElement('h2');
   title.textContent = i18next.t(strings.posts);

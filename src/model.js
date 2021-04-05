@@ -32,6 +32,11 @@ export const storePosts = (state, posts) => {
 
 export const initialState = {
   state: appStates.idle,
+  ui: {
+    modal: {
+      postId: -1,
+    },
+  },
   error: '',
   feeds: [],
   posts: [],

@@ -1,11 +1,11 @@
+import 'bootstrap';
 import axios from 'axios';
 import onChange from 'on-change';
 import _ from 'lodash';
 import isValidRssUrl from './validator';
 import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
-import 'bootstrap/dist/js/bootstrap.bundle';
-import { initView, updateView } from './view';
+import { updateView } from './view';
 import {
   getLastPublishDate, initialState,
   isFeedUrlDuplicated,
@@ -20,7 +20,6 @@ const routes = {
     const proxyUrl = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
     proxyUrl.searchParams.set('disableCache', 'true');
     proxyUrl.searchParams.set('url', targetUrl);
-    // return targetUrl;
     return proxyUrl.toString();
   },
 };
@@ -32,7 +31,6 @@ const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
       .filter((post) => post.publishDate > feed.lastUpdate);
     if (newPosts.length === 0) return;
     storePosts(state, newPosts);
-    // eslint-disable-next-line no-param-reassign
     feed.lastUpdate = getLastPublishDate(newPosts);
   })
   .catch((err) => {
@@ -76,8 +74,6 @@ export default () => {
     updateView(path, value, previousValue, watchedState, elements);
   });
 
-  initView(watchedState, elements);
-
   refreshAllFeeds(watchedState);
 
   elements.formEl.addEventListener('submit', (e) => {
@@ -98,5 +94,17 @@ export default () => {
     }
 
     addNewFeed(watchedState, feedUrl);
+  });
+
+  elements.postsEl.addEventListener('click', (event) => {
+    const postId = event.target.dataset.id;
+
+    if (!postId) {
+      return;
+    }
+
+    const post = watchedState.posts[postId];
+    post.visited = true;
+    watchedState.ui.modal.postId = postId;
   });
 };

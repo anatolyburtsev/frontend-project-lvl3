@@ -22,10 +22,10 @@
   "homepage": "https://github.com/anatolyburtsev/frontend-project-lvl3#readme",
   "main": "src/init.js",
   "dependencies": {
+    "@popperjs/core": "^2.9.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "i18next": "^20.0.0",
-    "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "on-change": "^2.2.3",
     "yup": "^0.32.9"

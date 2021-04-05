@@ -1,5 +1,4 @@
 import i18next from 'i18next';
-import $ from 'jquery';
 import strings from './locales/stringConstants';
 import { appStates } from './constants';
 import { renderFeeds, renderPosts } from './render';
@@ -29,23 +28,6 @@ const clearInput = (elements) => {
 };
 
 const getPostById = (state, id) => state.posts[id];
-
-const setupModal = (state, elements) => {
-  $('#modal')
-    .on('show.bs.modal', (event) => {
-      const btn = event.relatedTarget;
-      const { id } = btn.dataset;
-      const post = getPostById(state, id);
-      post.visited = true;
-      elements.modalTitleEl.textContent = post.title;
-      elements.modalBodyEl.textContent = post.description;
-      elements.modalMoreInfoBtnEl.setAttribute('href', post.link);
-    });
-};
-
-export const initView = (state, elements) => {
-  setupModal(state, elements);
-};
 
 const appViewStateMachine = (elements) => ({
   [appStates.idle]: {
@@ -93,6 +75,15 @@ const appViewStateMachine = (elements) => ({
   },
 });
 
+const fillModal = (state, elements) => {
+  const id = state.ui.modal.postId;
+  const post = getPostById(state, id);
+  elements.modalTitleEl.textContent = post.title;
+  elements.modalBodyEl.textContent = post.description;
+  elements.modalMoreInfoBtnEl.setAttribute('href', post.link);
+};
+
+// eslint-disable-next-line import/prefer-default-export
 export const updateView = (path, value, previousValue, state, elements) => {
   if (path === 'state') {
     appViewStateMachine(elements)[previousValue].leave();
@@ -105,5 +96,9 @@ export const updateView = (path, value, previousValue, state, elements) => {
 
   if (path.startsWith('posts')) {
     renderPosts(state.posts, elements);
+  }
+
+  if (path === 'ui.modal.postId') {
+    fillModal(state, elements);
   }
 };
