@@ -1,4 +1,4 @@
-import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap.min';
 import axios from 'axios';
 import onChange from 'on-change';
 import _ from 'lodash';
