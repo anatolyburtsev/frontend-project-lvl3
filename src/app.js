@@ -98,7 +98,6 @@ export default () => {
 
   elements.postsEl.addEventListener('click', (event) => {
     const postId = event.target.dataset.id;
-
     if (!postId) {
       return;
     }
