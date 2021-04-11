@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 import strings from './locales/stringConstants';
 
 export const getElements = (document) => ({
@@ -13,10 +12,10 @@ export const getElements = (document) => ({
   modalMoreInfoBtnEl: document.querySelector('.full-article'),
 });
 
-export const renderFeeds = (feeds, elements) => {
+export const renderFeeds = (feeds, elements, i18nInstance) => {
   elements.feedsEl.innerHTML = '';
   const title = document.createElement('h2');
-  title.textContent = i18next.t(strings.feeds);
+  title.textContent = i18nInstance.t(strings.feeds);
   elements.feedsEl.appendChild(title);
   const list = document.createElement('ul');
   list.classList.add('list-group', 'mb-5');
@@ -34,10 +33,10 @@ export const renderFeeds = (feeds, elements) => {
   elements.feedsEl.appendChild(list);
 };
 
-export const renderPosts = (posts, elements) => {
+export const renderPosts = (posts, elements, i18nInstance) => {
   elements.postsEl.innerHTML = '';
   const title = document.createElement('h2');
-  title.textContent = i18next.t(strings.posts);
+  title.textContent = i18nInstance.t(strings.posts);
   elements.postsEl.appendChild(title);
   const list = document.createElement('ul');
   list.classList.add('list-group');
@@ -63,7 +62,7 @@ export const renderPosts = (posts, elements) => {
     btn.dataset.id = post.id;
     btn.dataset.toggle = 'modal';
     btn.dataset.target = '#modal';
-    btn.textContent = i18next.t(strings.view);
+    btn.textContent = i18nInstance.t(strings.view);
 
     item.appendChild(link);
     item.appendChild(btn);

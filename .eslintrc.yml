@@ -3,6 +3,8 @@
 plugins:
   - jest
   - babel
+  - testing-library
+  - jest-dom
 
 env:
   node: true
@@ -14,8 +16,11 @@ parser: babel-eslint
 extends:
   - 'airbnb-base'
   - 'plugin:jest/recommended'
+  - 'plugin:testing-library/recommended'
+  - 'plugin:jest-dom/recommended'
 
 rules:
   no-console: 0
   import/extensions: 0
   no-param-reassign: 0
+  jest/expect-expect: 0

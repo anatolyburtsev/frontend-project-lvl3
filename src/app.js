@@ -5,19 +5,19 @@ import _ from 'lodash';
 import isValidRssUrl from './validator';
 import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
-import { updateView } from './view';
+import { updateView, UiHelpers } from './view';
 import {
   getLastPublishDate, initialState,
   isFeedUrlDuplicated,
   storeFeed,
   storePosts,
 } from './model';
-import { appStates, FEED_REFRESH_TIMEOUT_MS } from './constants';
 import { getElements } from './render';
+import { appStates, FEED_REFRESH_TIMEOUT_MS, ALL_ORIGINS_PROXY } from './constants';
 
 const routes = {
   proxy: (targetUrl) => {
-    const proxyUrl = new URL('/get', 'https://hexlet-allorigins.herokuapp.com');
+    const proxyUrl = new URL('/get', ALL_ORIGINS_PROXY);
     proxyUrl.searchParams.set('disableCache', 'true');
     proxyUrl.searchParams.set('url', targetUrl);
     return proxyUrl.toString();
@@ -68,10 +68,11 @@ const addNewFeed = (state, link) => axios
     }
   });
 
-export default () => {
+export default (i18Instance) => {
   const elements = getElements(document);
+  const uiHelper = new UiHelpers(i18Instance, elements);
   const watchedState = onChange(_.cloneDeep(initialState), (path, value, previousValue) => {
-    updateView(path, value, previousValue, watchedState, elements);
+    updateView(path, value, previousValue, watchedState, uiHelper, i18Instance);
   });
 
   refreshAllFeeds(watchedState);

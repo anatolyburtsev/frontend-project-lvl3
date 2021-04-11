@@ -8,3 +8,5 @@ export const appStates = Object.freeze({
 });
 
 export const FEED_REFRESH_TIMEOUT_MS = 5000;
+
+export const ALL_ORIGINS_PROXY = 'https://hexlet-allorigins.herokuapp.com';

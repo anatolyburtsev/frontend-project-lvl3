@@ -1,35 +1,59 @@
-import i18next from 'i18next';
 import strings from './locales/stringConstants';
 import { appStates } from './constants';
 import { renderFeeds, renderPosts } from './render';
 
-const showError = (textKey, elements) => {
-  elements.feedbackEl.classList.add('text-danger');
-  elements.feedbackEl.textContent = i18next.t(textKey);
-};
+export class UiHelpers {
+  constructor(i18nInstance, elements) {
+    this.i18nInstance = i18nInstance;
+    this.elements = elements;
+  }
 
-const hideError = (elements) => {
-  elements.feedbackEl.classList.remove('text-danger');
-  elements.feedbackEl.textContent = '';
-};
+  showError(textKey) {
+    this.elements.feedbackEl.classList.add('text-danger');
+    this.elements.feedbackEl.textContent = this.i18nInstance.t(textKey);
+  }
 
-const showFeedback = (textKey, elements) => {
-  elements.feedbackEl.classList.add('text-success');
-  elements.feedbackEl.textContent = i18next.t(textKey);
-};
+  hideError() {
+    this.elements.feedbackEl.classList.remove('text-danger');
+    this.elements.feedbackEl.textContent = '';
+  }
 
-const hideFeedback = (elements) => {
-  elements.feedbackEl.classList.remove('text-success');
-  elements.feedbackEl.textContent = '';
-};
+  showFeedback(textKey) {
+    this.elements.feedbackEl.classList.add('text-success');
+    this.elements.feedbackEl.textContent = this.i18nInstance.t(textKey);
+  }
 
-const clearInput = (elements) => {
-  elements.inputUrlEl.value = '';
-};
+  hideFeedback() {
+    this.elements.feedbackEl.classList.remove('text-success');
+    this.elements.feedbackEl.textContent = '';
+  }
+
+  clearInput() {
+    this.elements.inputUrlEl.value = '';
+  }
+
+  showInputInvalid() {
+    this.elements.inputUrlEl.classList.add('is-invalid');
+  }
+
+  hideInputInvalid() {
+    this.elements.inputUrlEl.classList.remove('is-invalid');
+  }
+
+  enableReadonly() {
+    this.elements.buttonEl.setAttribute('disabled', '');
+    this.elements.inputUrlEl.setAttribute('readonly', '');
+  }
+
+  disableReadonly() {
+    this.elements.buttonEl.removeAttribute('disabled');
+    this.elements.inputUrlEl.removeAttribute('readonly');
+  }
+}
 
 const getPostById = (state, id) => state.posts[id];
 
-const appViewStateMachine = (elements) => ({
+const appViewStateMachine = (uiHelper) => ({
   [appStates.idle]: {
     enter: () => {
     },
@@ -38,39 +62,37 @@ const appViewStateMachine = (elements) => ({
   },
   [appStates.invalidUrl]: {
     enter: () => {
-      elements.inputUrlEl.classList.add('is-invalid');
-      showError(strings.alerts.invalidUrl, elements);
+      uiHelper.showInputInvalid();
+      uiHelper.showError(strings.alerts.invalidUrl);
     },
     leave: () => {
-      elements.inputUrlEl.classList.remove('is-invalid');
-      hideError(elements);
+      uiHelper.hideInputInvalid();
+      uiHelper.hideError();
     },
   },
   [appStates.processing]: {
     enter: () => {
-      elements.buttonEl.setAttribute('disabled', '');
-      elements.inputUrlEl.setAttribute('readonly', '');
+      uiHelper.enableReadonly();
     },
     leave: () => {
-      elements.buttonEl.removeAttribute('disabled');
-      elements.inputUrlEl.removeAttribute('readonly');
+      uiHelper.disableReadonly();
     },
   },
   [appStates.generalError]: {
     enter: (state) => {
-      showError(state.error, elements);
+      uiHelper.showError(state.error);
     },
     leave: () => {
-      hideError(elements);
+      uiHelper.hideError();
     },
   },
   [appStates.success]: {
     enter: () => {
-      clearInput(elements);
-      showFeedback(strings.alerts.rssAddedSuccessfully, elements);
+      uiHelper.clearInput();
+      uiHelper.showFeedback(strings.alerts.rssAddedSuccessfully);
     },
     leave: () => {
-      hideFeedback(elements);
+      uiHelper.hideFeedback();
     },
   },
 });
@@ -83,22 +105,21 @@ const fillModal = (state, elements) => {
   elements.modalMoreInfoBtnEl.setAttribute('href', post.link);
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export const updateView = (path, value, previousValue, state, elements) => {
+export const updateView = (path, value, previousValue, state, uiHelper, i18nInstance) => {
   if (path === 'state') {
-    appViewStateMachine(elements)[previousValue].leave();
-    appViewStateMachine(elements)[value].enter(state);
+    appViewStateMachine(uiHelper)[previousValue].leave();
+    appViewStateMachine(uiHelper)[value].enter(state);
   }
 
   if (path.startsWith('feeds')) {
-    renderFeeds(state.feeds, elements);
+    renderFeeds(state.feeds, uiHelper.elements, i18nInstance);
   }
 
   if (path.startsWith('posts')) {
-    renderPosts(state.posts, elements);
+    renderPosts(state.posts, uiHelper.elements, i18nInstance);
   }
 
   if (path === 'ui.modal.postId') {
-    fillModal(state, elements);
+    fillModal(state, uiHelper.elements);
   }
 };
