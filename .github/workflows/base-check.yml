@@ -1,4 +1,4 @@
-name: unit-lint-check
+name: linter-and-tests
 on: [push]
 jobs:
   lint:
