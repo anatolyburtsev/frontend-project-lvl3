@@ -109,7 +109,7 @@ export const updateView = (path, value, previousValue, state, elements, i18nInst
     renderFeeds(state.feeds, elements, i18nInstance);
   }
 
-  if (path.startsWith('posts')) {
+  if (path.startsWith('posts') || path === 'ui.visitedPosts') {
     renderPosts(state, elements, i18nInstance);
   }
 

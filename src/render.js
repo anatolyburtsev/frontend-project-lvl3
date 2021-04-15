@@ -45,7 +45,7 @@ export const renderPosts = (state, elements, i18nInstance) => {
     item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
 
     const link = document.createElement('a');
-    if (state.ui.visitedPosts.has(post.id)) {
+    if (state.ui.visitedPosts.has(post.id.toString())) {
       link.classList.add('font-weight-normal');
     } else {
       link.classList.add('font-weight-bold');
