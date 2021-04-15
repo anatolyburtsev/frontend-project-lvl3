@@ -33,19 +33,19 @@ export const renderFeeds = (feeds, elements, i18nInstance) => {
   elements.feedsEl.appendChild(list);
 };
 
-export const renderPosts = (posts, elements, i18nInstance) => {
+export const renderPosts = (state, elements, i18nInstance) => {
   elements.postsEl.innerHTML = '';
   const title = document.createElement('h2');
   title.textContent = i18nInstance.t(strings.posts);
   elements.postsEl.appendChild(title);
   const list = document.createElement('ul');
   list.classList.add('list-group');
-  posts.forEach((post) => {
+  state.posts.forEach((post) => {
     const item = document.createElement('li');
     item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
 
     const link = document.createElement('a');
-    if (post.visited) {
+    if (state.ui.visitedPosts.has(post.id)) {
       link.classList.add('font-weight-normal');
     } else {
       link.classList.add('font-weight-bold');

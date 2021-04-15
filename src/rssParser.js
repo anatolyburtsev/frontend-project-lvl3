@@ -1,6 +1,11 @@
 const parser = new DOMParser();
 
 const validateRssFormat = (dom) => {
+  const parserErrorCount = dom.getElementsByTagName('parsererror').length;
+  if (parserErrorCount > 0) {
+    const errorText = dom.textContent;
+    throw new Error(`XML parsing error: ${errorText}`);
+  }
   const rss = dom.querySelector('rss');
   if (rss === null) {
     throw new Error('Invalid rss format: rss element not found');
@@ -15,9 +20,9 @@ const parseRss = (xmlString) => {
   const rssXMLDom = parser.parseFromString(xmlString, 'application/xml');
   validateRssFormat(rssXMLDom);
 
-  const title = rssXMLDom.querySelector('title').innerHTML;
-  const description = rssXMLDom.querySelector('description').innerHTML;
-  const items = rssXMLDom.querySelectorAll('item');
+  const title = rssXMLDom.querySelector('channel > title').textContent;
+  const description = rssXMLDom.querySelector('channel > description').textContent;
+  const items = rssXMLDom.querySelectorAll('channel > item');
   const posts = [...items.values()].map((item) => {
     const postTitle = item.querySelector('title').textContent;
     const postLink = item.querySelector('link').textContent;

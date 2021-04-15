@@ -5,7 +5,7 @@ import _ from 'lodash';
 import isValidRssUrl from './validator';
 import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
-import { updateView, UiHelpers } from './view';
+import { updateView } from './view';
 import {
   getLastPublishDate, initialState,
   isFeedUrlDuplicated,
@@ -13,7 +13,7 @@ import {
   storePosts,
 } from './model';
 import { getElements } from './render';
-import { appStates, FEED_REFRESH_TIMEOUT_MS, ALL_ORIGINS_PROXY } from './constants';
+import { ALL_ORIGINS_PROXY, appStates } from './constants';
 
 const routes = {
   proxy: (targetUrl) => {
@@ -38,6 +38,7 @@ const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
   });
 
 const refreshAllFeeds = (state) => {
+  const FEED_REFRESH_TIMEOUT_MS = 3000;
   window.setTimeout(() => Promise.all(state.feeds.map(
     (feed) => refreshFeed(state, feed),
   ))
@@ -70,9 +71,8 @@ const addNewFeed = (state, link) => axios
 
 export default (i18Instance) => {
   const elements = getElements(document);
-  const uiHelper = new UiHelpers(i18Instance, elements);
   const watchedState = onChange(_.cloneDeep(initialState), (path, value, previousValue) => {
-    updateView(path, value, previousValue, watchedState, uiHelper, i18Instance);
+    updateView(path, value, previousValue, watchedState, elements, i18Instance);
   });
 
   refreshAllFeeds(watchedState);
@@ -103,8 +103,7 @@ export default (i18Instance) => {
       return;
     }
 
-    const post = watchedState.posts[postId];
-    post.visited = true;
+    watchedState.ui.visitedPosts.add(postId);
     watchedState.ui.modal.postId = postId;
   });
 };

@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import ru from './locales/ru';
+import resources from './locales';
 import App from './app.js';
 
 export default () => {
@@ -7,9 +7,7 @@ export default () => {
   i18Instance.init({
     lng: 'ru',
     debug: false,
-    resources: {
-      ru,
-    },
+    resources,
   })
     .then(() => App(i18Instance));
 };

@@ -2,58 +2,51 @@ import strings from './locales/stringConstants';
 import { appStates } from './constants';
 import { renderFeeds, renderPosts } from './render';
 
-export class UiHelpers {
-  constructor(i18nInstance, elements) {
-    this.i18nInstance = i18nInstance;
-    this.elements = elements;
-  }
+const showError = (elements, i18nInstance, textKey) => {
+  elements.feedbackEl.classList.add('text-danger');
+  elements.feedbackEl.textContent = i18nInstance.t(textKey);
+};
 
-  showError(textKey) {
-    this.elements.feedbackEl.classList.add('text-danger');
-    this.elements.feedbackEl.textContent = this.i18nInstance.t(textKey);
-  }
+const hideError = (elements) => {
+  elements.feedbackEl.classList.remove('text-danger');
+  elements.feedbackEl.textContent = '';
+};
 
-  hideError() {
-    this.elements.feedbackEl.classList.remove('text-danger');
-    this.elements.feedbackEl.textContent = '';
-  }
+const showFeedback = (elements, i18nInstance, textKey) => {
+  elements.feedbackEl.classList.add('text-success');
+  elements.feedbackEl.textContent = i18nInstance.t(textKey);
+};
 
-  showFeedback(textKey) {
-    this.elements.feedbackEl.classList.add('text-success');
-    this.elements.feedbackEl.textContent = this.i18nInstance.t(textKey);
-  }
+const hideFeedback = (elements) => {
+  elements.feedbackEl.classList.remove('text-success');
+  elements.feedbackEl.textContent = '';
+};
 
-  hideFeedback() {
-    this.elements.feedbackEl.classList.remove('text-success');
-    this.elements.feedbackEl.textContent = '';
-  }
+const clearInput = (elements) => {
+  elements.inputUrlEl.value = '';
+};
 
-  clearInput() {
-    this.elements.inputUrlEl.value = '';
-  }
+const showInputInvalid = (elements) => {
+  elements.inputUrlEl.classList.add('is-invalid');
+};
 
-  showInputInvalid() {
-    this.elements.inputUrlEl.classList.add('is-invalid');
-  }
+const hideInputInvalid = (elements) => {
+  elements.inputUrlEl.classList.remove('is-invalid');
+};
 
-  hideInputInvalid() {
-    this.elements.inputUrlEl.classList.remove('is-invalid');
-  }
+const enableReadonly = (elements) => {
+  elements.buttonEl.setAttribute('disabled', '');
+  elements.inputUrlEl.setAttribute('readonly', '');
+};
 
-  enableReadonly() {
-    this.elements.buttonEl.setAttribute('disabled', '');
-    this.elements.inputUrlEl.setAttribute('readonly', '');
-  }
-
-  disableReadonly() {
-    this.elements.buttonEl.removeAttribute('disabled');
-    this.elements.inputUrlEl.removeAttribute('readonly');
-  }
-}
+const disableReadonly = (elements) => {
+  elements.buttonEl.removeAttribute('disabled');
+  elements.inputUrlEl.removeAttribute('readonly');
+};
 
 const getPostById = (state, id) => state.posts[id];
 
-const appViewStateMachine = (uiHelper) => ({
+const appViewStateMachine = (elements, i18nInstance) => ({
   [appStates.idle]: {
     enter: () => {
     },
@@ -62,37 +55,37 @@ const appViewStateMachine = (uiHelper) => ({
   },
   [appStates.invalidUrl]: {
     enter: () => {
-      uiHelper.showInputInvalid();
-      uiHelper.showError(strings.alerts.invalidUrl);
+      showInputInvalid(elements);
+      showError(elements, i18nInstance, strings.alerts.invalidUrl);
     },
     leave: () => {
-      uiHelper.hideInputInvalid();
-      uiHelper.hideError();
+      hideInputInvalid(elements);
+      hideError(elements);
     },
   },
   [appStates.processing]: {
     enter: () => {
-      uiHelper.enableReadonly();
+      enableReadonly(elements);
     },
     leave: () => {
-      uiHelper.disableReadonly();
+      disableReadonly(elements);
     },
   },
   [appStates.generalError]: {
     enter: (state) => {
-      uiHelper.showError(state.error);
+      showError(elements, i18nInstance, state.error);
     },
     leave: () => {
-      uiHelper.hideError();
+      hideError(elements);
     },
   },
   [appStates.success]: {
     enter: () => {
-      uiHelper.clearInput();
-      uiHelper.showFeedback(strings.alerts.rssAddedSuccessfully);
+      clearInput(elements);
+      showFeedback(elements, i18nInstance, strings.alerts.rssAddedSuccessfully);
     },
     leave: () => {
-      uiHelper.hideFeedback();
+      hideFeedback(elements);
     },
   },
 });
@@ -105,21 +98,22 @@ const fillModal = (state, elements) => {
   elements.modalMoreInfoBtnEl.setAttribute('href', post.link);
 };
 
-export const updateView = (path, value, previousValue, state, uiHelper, i18nInstance) => {
+// eslint-disable-next-line import/prefer-default-export
+export const updateView = (path, value, previousValue, state, elements, i18nInstance) => {
   if (path === 'state') {
-    appViewStateMachine(uiHelper)[previousValue].leave();
-    appViewStateMachine(uiHelper)[value].enter(state);
+    appViewStateMachine(elements, i18nInstance)[previousValue].leave();
+    appViewStateMachine(elements, i18nInstance)[value].enter(state);
   }
 
   if (path.startsWith('feeds')) {
-    renderFeeds(state.feeds, uiHelper.elements, i18nInstance);
+    renderFeeds(state.feeds, elements, i18nInstance);
   }
 
   if (path.startsWith('posts')) {
-    renderPosts(state.posts, uiHelper.elements, i18nInstance);
+    renderPosts(state, elements, i18nInstance);
   }
 
   if (path === 'ui.modal.postId') {
-    fillModal(state, uiHelper.elements);
+    fillModal(state, elements);
   }
 };

@@ -24,7 +24,6 @@ export const storePosts = (state, posts) => {
   const firstIdx = state.posts.length;
   const enrichedPosts = posts.map((post, idx) => ({
     id: firstIdx + idx,
-    visited: false,
     ...post,
   }));
   state.posts.unshift(...enrichedPosts);
@@ -36,6 +35,7 @@ export const initialState = {
     modal: {
       postId: -1,
     },
+    visitedPosts: new Set(),
   },
   error: '',
   feeds: [],
