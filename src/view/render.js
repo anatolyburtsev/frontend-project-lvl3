@@ -1,4 +1,4 @@
-import strings from './locales/stringConstants';
+import strings from '../locales/stringConstants';
 
 export const getElements = (document) => ({
   formEl: document.querySelector('#main-form'),

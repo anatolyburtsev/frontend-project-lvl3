@@ -1,5 +1,5 @@
-import strings from './locales/stringConstants';
-import { appStates } from './constants';
+import strings from '../locales/stringConstants';
+import { appStates } from '../constants';
 import { renderFeeds, renderPosts } from './render';
 
 const showError = (elements, i18nInstance, textKey) => {

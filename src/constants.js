@@ -6,5 +6,3 @@ export const appStates = Object.freeze({
   invalidUrl: 'invalid url',
   generalError: 'invalid rss feed',
 });
-
-export const ALL_ORIGINS_PROXY = 'https://hexlet-allorigins.herokuapp.com';

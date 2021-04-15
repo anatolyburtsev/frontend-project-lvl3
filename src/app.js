@@ -5,18 +5,19 @@ import _ from 'lodash';
 import isValidRssUrl from './validator';
 import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
-import { updateView } from './view';
+import { updateView } from './view/view';
 import {
   getLastPublishDate, initialState,
   isFeedUrlDuplicated,
   storeFeed,
   storePosts,
 } from './model';
-import { getElements } from './render';
-import { ALL_ORIGINS_PROXY, appStates } from './constants';
+import { getElements } from './view/render';
+import { appStates } from './constants';
 
 const routes = {
   proxy: (targetUrl) => {
+    const ALL_ORIGINS_PROXY = 'https://hexlet-allorigins.herokuapp.com';
     const proxyUrl = new URL('/get', ALL_ORIGINS_PROXY);
     proxyUrl.searchParams.set('disableCache', 'true');
     proxyUrl.searchParams.set('url', targetUrl);

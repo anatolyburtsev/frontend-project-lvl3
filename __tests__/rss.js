@@ -11,13 +11,13 @@ import nock from 'nock';
 import userEvent from '@testing-library/user-event';
 import App from '../src/app';
 import en from '../__fixture__/test_locale_en';
-import { ALL_ORIGINS_PROXY } from '../src/constants';
 
 const loadFixture = (filename) => {
   const pathToFixtures = path.resolve(__dirname, '../__fixture__/', filename);
   return fs.readFileSync(pathToFixtures, 'utf8');
 };
 
+const ALL_ORIGINS_PROXY = 'https://hexlet-allorigins.herokuapp.com';
 const mockRssResponsePlainText = (string) => {
   nock(ALL_ORIGINS_PROXY)
     .get(/.*rss/)

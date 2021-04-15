@@ -1,8 +1,8 @@
 const parser = new DOMParser();
 
 const validateRssFormat = (dom) => {
-  const parserErrorCount = dom.getElementsByTagName('parsererror').length;
-  if (parserErrorCount > 0) {
+  const parserError = dom.querySelector('parsererror');
+  if (parserError) {
     const errorText = dom.textContent;
     throw new Error(`XML parsing error: ${errorText}`);
   }
