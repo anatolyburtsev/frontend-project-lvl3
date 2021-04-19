@@ -12,5 +12,8 @@ export default {
     [strings.view]: 'View',
     [strings.readFull]: 'Read more',
     [strings.close]: 'Close',
+    [strings.error.xmlParsing]: 'XML parsing error',
+    [strings.error.invalidRssRssNotFound]: 'Invalid rss format: rss element not found',
+    [strings.error.invalidRssVersionNotFound]: 'Invalid rss format: rss version not found',
   },
 };

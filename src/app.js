@@ -1,19 +1,19 @@
 import 'bootstrap/dist/js/bootstrap.min';
 import axios from 'axios';
 import onChange from 'on-change';
-import _ from 'lodash';
 import isValidRssUrl from './validator';
 import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
 import { updateView } from './view/view';
 import {
-  getLastPublishDate, initialState,
+  getInitialState,
+  getLastPublishDate,
   isFeedUrlDuplicated,
   storeFeed,
   storePosts,
 } from './model';
 import { getElements } from './view/render';
-import { appStates } from './constants';
+import { appStates, FEED_REFRESH_TIMEOUT_MS } from './constants';
 
 const routes = {
   proxy: (targetUrl) => {
@@ -25,8 +25,8 @@ const routes = {
   },
 };
 
-const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
-  .then((response) => parseRSSXML(response.data.contents))
+const refreshFeed = (state, feed, i18Instance) => axios.get(routes.proxy(feed.link))
+  .then((response) => parseRSSXML(response.data.contents, i18Instance))
   .then((rssFeed) => {
     const newPosts = rssFeed.posts
       .filter((post) => post.publishDate > feed.lastUpdate);
@@ -38,19 +38,18 @@ const refreshFeed = (state, feed) => axios.get(routes.proxy(feed.link))
     console.error(`Failed to refresh feed: ${feed.link}`, err);
   });
 
-const refreshAllFeeds = (state) => {
-  const FEED_REFRESH_TIMEOUT_MS = 3000;
+const refreshAllFeeds = (state, i18Instance) => {
   window.setTimeout(() => Promise.all(state.feeds.map(
-    (feed) => refreshFeed(state, feed),
+    (feed) => refreshFeed(state, feed, i18Instance),
   ))
     .then(() => {
-      refreshAllFeeds(state);
+      refreshAllFeeds(state, i18Instance);
     }), FEED_REFRESH_TIMEOUT_MS);
 };
 
-const addNewFeed = (state, link) => axios
+const addNewFeed = (state, link, i18Instance) => axios
   .get(routes.proxy(link))
-  .then((response) => parseRSSXML(response.data.contents))
+  .then((response) => parseRSSXML(response.data.contents, i18Instance))
   .then((rssFeed) => {
     storeFeed(state, rssFeed, link);
     storePosts(state, rssFeed.posts);
@@ -72,11 +71,11 @@ const addNewFeed = (state, link) => axios
 
 export default (i18Instance) => {
   const elements = getElements(document);
-  const watchedState = onChange(_.cloneDeep(initialState), (path, value, previousValue) => {
+  const watchedState = onChange(getInitialState(), (path, value, previousValue) => {
     updateView(path, value, previousValue, watchedState, elements, i18Instance);
   });
 
-  refreshAllFeeds(watchedState);
+  refreshAllFeeds(watchedState, i18Instance);
 
   elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -95,7 +94,7 @@ export default (i18Instance) => {
       return;
     }
 
-    addNewFeed(watchedState, feedUrl);
+    addNewFeed(watchedState, feedUrl, i18Instance);
   });
 
   elements.postsEl.addEventListener('click', (event) => {

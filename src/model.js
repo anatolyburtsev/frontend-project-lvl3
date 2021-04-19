@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { appStates } from './constants';
 
 export const isFeedUrlDuplicated = (feeds, url) => {
@@ -29,15 +30,17 @@ export const storePosts = (state, posts) => {
   state.posts.unshift(...enrichedPosts);
 };
 
-export const initialState = {
+const initialState = {
   state: appStates.idle,
   ui: {
     modal: {
-      postId: -1,
+      postId: null,
     },
     visitedPosts: new Set(),
   },
-  error: '',
+  error: null,
   feeds: [],
   posts: [],
 };
+
+export const getInitialState = () => _.cloneDeep(initialState);

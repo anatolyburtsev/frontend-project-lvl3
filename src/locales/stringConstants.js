@@ -6,6 +6,11 @@ export default {
     rssAddedSuccessfully: 'rssAddedSuccessfully',
     networkIssue: 'networkIssue',
   },
+  error: {
+    xmlParsing: 'xmlParsing',
+    invalidRssRssNotFound: 'invalidRssRssNotFound',
+    invalidRssVersionNotFound: 'invalidRssVersionNotFound',
+  },
   feeds: 'feeds',
   posts: 'posts',
   view: 'view',
