@@ -6,8 +6,8 @@ import parseRSSXML from './rssParser';
 import strings from './locales/stringConstants';
 import { updateView } from './view/view';
 import {
+  filterNewPosts,
   getInitialState,
-  getLastPublishDate,
   isFeedUrlDuplicated,
   storeFeed,
   storePosts,
@@ -28,11 +28,11 @@ const routes = {
 const refreshFeed = (state, feed, i18Instance) => axios.get(routes.proxy(feed.link))
   .then((response) => parseRSSXML(response.data.contents, i18Instance))
   .then((rssFeed) => {
-    const newPosts = rssFeed.posts
-      .filter((post) => post.publishDate > feed.lastUpdate);
+    const newPosts = filterNewPosts(state, rssFeed.posts);
+    // rssFeed.posts
+    // .filter((post) => post.publishDate > feed.lastUpdate);
     if (newPosts.length === 0) return;
     storePosts(state, newPosts);
-    feed.lastUpdate = getLastPublishDate(newPosts);
   })
   .catch((err) => {
     console.error(`Failed to refresh feed: ${feed.link}`, err);

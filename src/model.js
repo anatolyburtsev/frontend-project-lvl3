@@ -6,19 +6,16 @@ export const isFeedUrlDuplicated = (feeds, url) => {
   return idx > -1;
 };
 
-export const getLastPublishDate = (posts) => {
-  const publishDates = posts.map((post) => post.publishDate);
-  const maxPublishDate = Math.max(...publishDates);
-  return new Date(maxPublishDate);
-};
-
 export const storeFeed = (state, rssFeed, url) => {
-  const latestPublishDate = getLastPublishDate([...rssFeed.posts]);
   state.feeds.push({
     link: url,
-    lastUpdate: latestPublishDate,
     ...rssFeed.feed,
   });
+};
+
+export const filterNewPosts = (state, posts) => {
+  const currentPostLinks = state.posts.map((p) => p.link);
+  return posts.filter((p) => !currentPostLinks.includes(p.link));
 };
 
 export const storePosts = (state, posts) => {

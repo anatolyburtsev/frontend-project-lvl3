@@ -33,12 +33,10 @@ const parseRss = (xmlString, i18Instance) => {
     const postLink = postLinkEl.textContent;
     const postDescriptionEl = item.querySelector('description');
     const postDescription = postDescriptionEl.textContent;
-    const pubDate = new Date(item.querySelector('pubDate').textContent);
     return {
       title: postTitle,
       link: postLink,
       description: postDescription,
-      publishDate: pubDate,
     };
   });
 
