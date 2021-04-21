@@ -44,7 +44,7 @@ const disableReadonly = (elements) => {
   elements.inputUrlEl.removeAttribute('readonly');
 };
 
-const getPostById = (state, id) => state.posts[id];
+const getPostById = (state, id) => state.posts.filter((p) => (p.id === id))[0];
 
 const appViewStateMachine = (elements, i18nInstance) => ({
   [appStates.idle]: {

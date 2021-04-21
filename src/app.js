@@ -29,8 +29,6 @@ const refreshFeed = (state, feed, i18Instance) => axios.get(routes.proxy(feed.li
   .then((response) => parseRSSXML(response.data.contents, i18Instance))
   .then((rssFeed) => {
     const newPosts = filterNewPosts(state, rssFeed.posts);
-    // rssFeed.posts
-    // .filter((post) => post.publishDate > feed.lastUpdate);
     if (newPosts.length === 0) return;
     storePosts(state, newPosts);
   })

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { nanoid } from 'nanoid';
 import { appStates } from './constants';
 
 export const isFeedUrlDuplicated = (feeds, url) => {
@@ -19,9 +20,8 @@ export const filterNewPosts = (state, posts) => {
 };
 
 export const storePosts = (state, posts) => {
-  const firstIdx = state.posts.length;
-  const enrichedPosts = posts.map((post, idx) => ({
-    id: firstIdx + idx,
+  const enrichedPosts = posts.map((post) => ({
+    id: nanoid(),
     ...post,
   }));
   state.posts.unshift(...enrichedPosts);
