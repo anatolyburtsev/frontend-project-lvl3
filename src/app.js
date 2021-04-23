@@ -53,7 +53,7 @@ const addNewFeed = (state, link, i18Instance) => axios
     storePosts(state, rssFeed.posts);
   })
   .then(() => {
-    state.error = '';
+    state.error = null;
     state.state = appStates.success;
   })
   .catch((err) => {
